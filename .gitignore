@@ -1,0 +1,29 @@
+# Node / dependencies
+node_modules/
+
+# Pi project-local config
+.pi/
+*.code-workspace
+
+# Backups / archives
+backups/
+*.7z
+*.zip
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build / test output
+dist/
+build/
+coverage/

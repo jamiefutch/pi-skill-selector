@@ -1,0 +1,37 @@
+{
+  "name": "@jamiefutch/pi-skill-selector",
+  "version": "0.2.0",
+  "description": "Pi package: enable/disable skills by moving them between active/inactive directories",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "pi",
+    "pi-package",
+    "skills"
+  ],
+  "files": [
+    "extensions",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.4.0",
+    "vitest": "^1.0.0"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@jamiefutch/pi-skill-selector",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Pi package: enable/disable skills by moving them between active/inactive directories",
   "license": "MIT",
   "type": "module",

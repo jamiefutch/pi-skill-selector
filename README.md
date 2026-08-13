@@ -30,8 +30,7 @@ pi install npm:@jamiefutch/pi-skill-selector
 
 Then run `/reload`.
 
-> **Requirements:** the interactive `/skills` picker needs pi's **TUI mode**. 
-> `/skill-list`, `/skill-enable`, `/skill-disable`, and `/skill-info` work in any mode.
+> **Requirements:** the `/skills` picker is interactive and needs pi's **TUI mode**.
 
 ## Usage
 
@@ -55,13 +54,11 @@ pi-skill-selector — Skills (●=enabled ○=disabled) — 8/28 enabled
 
 > Pressing **SPACE** toggles the highlighted skill immediately (the `●`/`○` flips in-place) but does **not** require you to exit the list — keep selecting. When you close the picker with `Enter`/`Esc`, a summary of all your toggles appears. Run `/reload` once to apply everything.
 
+pi-skill-selector exposes a single command:
+
 | Command | Description |
 |---------|-------------|
-| `/skill-list` | Plain-text list of all skills with status + scope |
-| `/skill-enable <name>` | Enable a skill by name |
-| `/skill-disable <name>` | Disable a skill by name |
-| `/skill-info <name>` | Show status, scope, path, and description |
-| `/skills` | Interactive enable/disable picker |
+| `/skills` | Interactive enable/disable picker (↑/↓ select · SPACE toggle) |
 
 ## How it works
 

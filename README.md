@@ -47,9 +47,12 @@ Each row shows `●`/`○` (enabled/disabled), the skill name, its scope (`[glob
 
 ```
 pi-skill-selector — Skills (●=enabled ○=disabled) — 8/28 enabled
-  ● brainstorming   [global]  You MUST use this before any creative work...
-  ○ sql-server-table-reconciliation [global]  Compare SQL Server tables...
+ → ● brainstorming   [global]  You MUST use this before any creative work...
+   ○ sql-server-table-reconciliation [global]  Compare SQL Server tables...
+   ↑/↓ select · SPACE toggle · Enter/Esc close
 ```
+
+> Pressing **SPACE** toggles the highlighted skill immediately (the `●`/`○` flips in-place) but does **not** require you to exit the list — keep selecting. When you close the picker with `Enter`/`Esc`, a summary of all your toggles appears. Run `/reload` once to apply everything.
 
 | Command | Description |
 |---------|-------------|
@@ -100,8 +103,8 @@ npm test            # vitest run
 
 - **Type:** ESM (`"type": "module"`)
 - **Extensions:** `extensions/pi-skill-selector.ts` (declared via the `pi` manifest)
-- **Core dependency:** `@earendil-works/pi-coding-agent` (peer, `"*"`)
-- **Tests:** vitest — exercise listing, enable/disable (global + project), legacy migration, and scope labels using an isolated temp agent root (`PI_AGENT_ROOT`)
+- **Core dependencies (peer):** `@earendil-works/pi-coding-agent` (`*`), `@earendil-works/pi-tui` (`*`)
+- **Tests:** vitest — exercise listing, enable/disable (global + project), legacy migration, scope labels, and the space-bar selector, using an isolated temp agent root (`PI_AGENT_ROOT`)
 
 ## License
 

@@ -2,14 +2,15 @@
  * pi-skill-selector extension — enable/disable skills quickly.
  *
  * Usage:
- *   /skills        → interactive picker of active + inactive skills
+ *   /skills        → interactive picker; SPACE toggles the highlighted skill
  *   /skill-list    → plain text list of all skills
  *   /skill-enable  /skill-disable <name>  → toggle by name
  *   /skill-info <name>                    → show status/scope/description
  *
- * Each picker row shows the scope ([global] or [project/<name>]) and the
- * skill description. Pick a skill, then Enable or Disable it. Changes
- * require /reload (pi caches loaded skills per session).
+ * The picker is a custom TUI component rendered via ctx.ui.custom(). Row shows
+ * the scope ([global] or [project/<name>]) and description. Move with ↑/↓ and
+ * press SPACE to enable/disable the highlighted skill — the ●/○ updates live.
+ * Changes require /reload (pi caches loaded skills per session).
  *
  * Inactive skills are parked in a dot-prefixed SIBLING folder
  * (e.g. ~/.pi/agent/.skills-inactive) which pi never scans, so a disabled
@@ -23,8 +24,8 @@ import {
   skillPath,
   migrateLegacyDisabled,
   formatSkillList,
-  type SkillInfo,
 } from "../src/skills.ts";
+import { runSkillSelector } from "../src/selector.ts";
 
 export default function piSkillSelector(pi: ExtensionAPI): void {
   // One-time migration of legacy ~/.pi/agent/skills/_disabled → .skills-inactive
@@ -34,14 +35,20 @@ export default function piSkillSelector(pi: ExtensionAPI): void {
       `[pi-skill-selector] Migrated ${migrated} skills from _disabled/ to .skills-inactive (no longer loaded by pi).`,
     );
   }
+
   pi.registerCommand("skills", {
-    description: "Interactively enable/disable Pi skills (global + current project)",
+    description: "Interactively enable/disable Pi skills — SPACE toggles the highlighted skill",
     handler: async (_args, ctx: ExtensionCommandContext) => {
       if (ctx.mode !== "tui") {
         ctx.ui.notify("/skills requires TUI mode", "error");
         return;
       }
-      await showMenu(ctx, ctx.cwd);
+      const result = await runSkillSelector(ctx.ui, ctx.cwd);
+      if (result.changes.length === 0) {
+        return;
+      }
+      const summary = result.changes.join("\n");
+      ctx.ui.notify(`${summary}\n\nRun /reload to apply.`, "info");
     },
   });
 
@@ -107,60 +114,4 @@ export default function piSkillSelector(pi: ExtensionAPI): void {
       );
     },
   });
-}
-
-async function showMenu(ctx: ExtensionCommandContext, cwd: string): Promise<void> {
-  while (true) {
-    const skills = getAllSkills(cwd);
-    const enabledCount = skills.filter((s) => s.enabled).length;
-
-    // select() takes a flat string list; encode identity + status in the label.
-    const entries = new Map<string, SkillInfo>();
-    for (const s of skills) {
-      const label = `${s.enabled ? "●" : "○"} ${s.name}  [${scopeLabel(s)}]  ${shorten(s.description ?? "")}`;
-      entries.set(label, s);
-    }
-
-    const options = [...entries.keys()];
-    options.push("🔄 Refresh");
-    options.push("← Exit");
-
-    const chosen = await ctx.ui.select(
-      `pi-skill-selector — Skills (●=enabled ○=disabled) — ${enabledCount}/${skills.length} enabled`,
-      options,
-    );
-    if (!chosen || chosen === "← Exit") return;
-    if (chosen === "🔄 Refresh") continue;
-
-    const skill = entries.get(chosen);
-    if (!skill) continue;
-
-    await showSkillActions(ctx, cwd, skill);
-  }
-}
-
-async function showSkillActions(ctx: ExtensionCommandContext, cwd: string, skill: SkillInfo): Promise<void> {
-  const action = skill.enabled ? "Disable" : "Enable";
-  const choice = await ctx.ui.select(
-    `${action} ${skill.name}?`,
-    [
-      `${action} skill  (${skill.scope === "project" ? `project/${skill.project}` : "global"})`,
-      "Back to list",
-    ],
-  );
-  if (!choice || choice.startsWith("Back")) return;
-
-  if (choice.startsWith(action)) {
-    const ok = await ctx.ui.confirm(
-      `${action} "${skill.name}"?`,
-      `Scope: ${scopeLabel(skill)}\nDescription: ${skill.description ?? ""}\n\nRequires /reload to take effect.`,
-    );
-    if (!ok) return;
-    const res = moveSkill(skill.name, !skill.enabled, cwd);
-    ctx.ui.notify(res.message, res.success ? "info" : "error");
-  }
-}
-
-function shorten(s: string, max = 80): string {
-  return s.length > max ? s.slice(0, max - 1) + "…" : s;
 }

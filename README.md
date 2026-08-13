@@ -8,9 +8,10 @@ Disabling a skill moves it out of pi's scanned skills directory into a **dot-pre
 
 ## Features
 
-- **Interactive picker** (`/skills`) —— enable/disable any skill from one list
-- **Multi-scope** —— manages both your `global` skills and the **current project's** skills
-- **Scope & status at a glance** —— every row shows `●`/`○`, `[global]` / `[project/<name>]`, and the description
+- **Interactive picker** (`/skills`) — navigate with ↑/↓ and **toggle the highlighted skill with the SPACEBAR**
+- **Multi-scope** — manages both your `global` skills and the **current project's** skills
+- **Scope & status at a glance** — every row shows `●`/`○`, `[global]` / `[project/<name>]`, and the description
+- **Live feedback** — toggling updates the `●`/`○` on-screen immediately; a summary lists every change
 - **Genuinely removes** disabled skills from the prompt (parked in a folder pi never scans)
 - **One-time migration** of legacy `_disabled/` skills so they stop loading
 
@@ -42,7 +43,7 @@ Opens an interactive picker of **all** skills, across two scopes. The header nam
 - `global`   → `~/.pi/agent/skills`
 - `project`  → `<cwd>/.pi/skills`
 
-Each row shows `●`/`○` (enabled/disabled), the skill name, its scope (`[global]` or `[project/<name>]`), and its description. Pick a skill, then **Enable** or **Disable** it. Run `/reload` to apply.
+Each row shows `●`/`○` (enabled/disabled), the skill name, its scope (`[global]` or `[project/<name>]`), and its description. Move the highlight with `↑`/`↓` and press **`SPACE`** to toggle the highlighted skill — the `●`/`○` updates live. Press `Enter`/`Esc` to close; you'll get a summary of every toggle. Run `/reload` to apply.
 
 ```
 pi-skill-selector — Skills (●=enabled ○=disabled) — 8/28 enabled

@@ -51,7 +51,7 @@ export default function piSkillSelector(pi: ExtensionAPI): void {
       const skills = getAllSkills(ctx.cwd);
       const enabled = skills.filter((s) => s.enabled);
       const disabled = skills.filter((s) => !s.enabled);
-      let out = "# Pi Skills\n\n";
+      let out = "# pi-skill-selector — Pi Skills\n\n";
       out += `**Enabled (${enabled.length}):**\n${formatSkillList(enabled)}\n\n`;
       out += `**Disabled (${disabled.length}):**\n${formatSkillList(disabled)}\n\n`;
       out += `Total: ${skills.length}\n\n`;
@@ -126,7 +126,7 @@ async function showMenu(ctx: ExtensionCommandContext, cwd: string): Promise<void
     options.push("← Exit");
 
     const chosen = await ctx.ui.select(
-      `Skills (●=enabled ○=disabled) — ${enabledCount}/${skills.length} enabled`,
+      `pi-skill-selector — Skills (●=enabled ○=disabled) — ${enabledCount}/${skills.length} enabled`,
       options,
     );
     if (!chosen || chosen === "← Exit") return;

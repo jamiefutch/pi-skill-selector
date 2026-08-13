@@ -37,7 +37,7 @@ Then run `/reload`.
 /skills
 ```
 
-Opens an interactive picker of **all** skills, across two scopes:
+Opens an interactive picker of **all** skills, across two scopes. The header names the package (`pi-skill-selector`) so it's clear which tool you're using:
 
 - `global`   → `~/.pi/agent/skills`
 - `project`  → `<cwd>/.pi/skills`
@@ -45,7 +45,7 @@ Opens an interactive picker of **all** skills, across two scopes:
 Each row shows `●`/`○` (enabled/disabled), the skill name, its scope (`[global]` or `[project/<name>]`), and its description. Pick a skill, then **Enable** or **Disable** it. Run `/reload` to apply.
 
 ```
-Skills (●=enabled ○=disabled) — 8/9 enabled
+pi-skill-selector — Skills (●=enabled ○=disabled) — 8/28 enabled
   ● brainstorming   [global]  You MUST use this before any creative work...
   ○ sql-server-table-reconciliation [global]  Compare SQL Server tables...
 ```

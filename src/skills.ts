@@ -15,6 +15,7 @@
 import { homedir } from "node:os";
 import { join, basename } from "node:path";
 import { readdirSync, existsSync, mkdirSync, renameSync, readFileSync } from "node:fs";
+import { getAllNpmSkills, toggleNpmSkill, npmPackagesRoot, type NpmSkill } from "./npm-skills.ts";
 
 /** Compute the agent root. Honours the PI_AGENT_ROOT env var (proxying for
    tests/CI) and otherwise derives it from the user's home. */
@@ -24,8 +25,8 @@ function agentRoot(): string {
   return join(homedir(), ".pi", "agent");
 }
 
-/** Active + inactive dir pairs, keyed by scope. */
-export type SkillScope = "global" | "project";
+/** Active + inactive dir pairs, keyed by scope. "npm" has no fold—ers to move. */
+export type SkillScope = "global" | "project" | "npm";
 
 export interface ScopeLocation {
   scope: SkillScope;
@@ -50,7 +51,14 @@ export interface SkillInfo {
   enabled: boolean;
   scope: SkillScope;
   project?: string;
+  /** npm package that owns this skill (only when scope === "npm"). */
+  package?: string;
   description?: string;
+}
+
+/** Convert an npm-package skill to the shared SkillInfo shape. */
+function fromNpm(s: NpmSkill): SkillInfo {
+  return { name: s.name, enabled: s.enabled, scope: "npm", package: s.package, description: s.description };
 }
 
 /**
@@ -157,6 +165,7 @@ export function getAllSkills(cwd?: string): SkillInfo[] {
     skills.push(...collectDirSkills(loc.active, true, loc));
     skills.push(...collectDirSkills(loc.inactive, false, loc));
   }
+  skills.push(...getAllNpmSkills().map(fromNpm));
   return skills.sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -186,6 +195,14 @@ export function moveSkill(
     };
   }
 
+  // npm-package skills are toggled via package filtering in settings.json.
+  if (skill.scope === "npm") {
+    if (!skill.package) {
+      return { success: false, message: `Skill "${name}": missing package info.` };
+    }
+    return toggleNpmSkill(skill.package, name, enable);
+  }
+
   const dirs = skillDirs(skill, cwd);
   const from = enable ? dirs.inactive : dirs.active;
   const to = enable ? dirs.active : dirs.inactive;
@@ -209,10 +226,13 @@ export function moveSkill(
 }
 
 /** Human-readable one-line description of a skill's scope (for the list). */
-export function scopeLabel(skill: Pick<SkillInfo, "scope" | "project">): string {
+export function scopeLabel(skill: Pick<SkillInfo, "scope" | "project" | "package">): string {
   if (skill.scope === "project") {
     const name = basename(skill.project ?? "");
     return name ? `project/${name}` : "project";
+  }
+  if (skill.scope === "npm") {
+    return skill.package ? `npm:${skill.package}` : "npm";
   }
   return "global";
 }
@@ -220,12 +240,18 @@ export function scopeLabel(skill: Pick<SkillInfo, "scope" | "project">): string 
 export function formatSkillList(skills: SkillInfo[]): string {
   if (skills.length === 0) return "  (none)";
   return skills
-    .map((s) => `  ${s.enabled ? "●" : "○"} ${s.name}  [${scopeLabel(s)}]  ${s.description ?? ""}`.trimEnd())
+    .map((s) => {
+      const status = s.scope === "npm" ? (s.enabled ? "✓" : "✗") : s.enabled ? "●" : "○";
+      return `  ${status} ${s.name}  [${scopeLabel(s)}]  ${s.description ?? ""}`.trimEnd();
+    })
     .join("\n");
 }
 
 /** Absolute on-disk path of where a skill currently lives. */
 export function skillPath(skill: SkillInfo, cwd?: string): string {
+  if (skill.scope === "npm" && skill.package) {
+    return join(npmPackagesRoot(), skill.package, "skills", skill.name);
+  }
   const loc = resolveScopeLocation(skill.scope, skill.project ?? cwd);
   const base = skill.enabled ? loc.active : loc.inactive;
   return join(base, skill.name);

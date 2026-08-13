@@ -84,11 +84,13 @@ export class SkillSelector {
     const heading = `pi-skill-selector — Skills (●=enabled ○=disabled) — ${enabledCount}/${this.skills.length} enabled`;
     const body = this.skills.map((s, i) => {
       const sel = i === this.highlight ? "→" : " ";
-      const row = `${sel} ${s.enabled ? "●" : "○"} ${s.name}  [${scopeLabel(s)}]  ${truncateDesc(s.description)}`;
+      const status = s.scope === "npm" ? (s.enabled ? "✓" : "✗") : s.enabled ? "●" : "○";
+      const tag = s.scope === "npm" ? `📦 ${scopeLabel(s)}` : scopeLabel(s);
+      const row = `${sel} ${status} ${s.name}  [${tag}]  ${truncateDesc(s.description)}`;
       return truncateToWidth(row, width);
     });
     const footer = "  ↑/↓ select · SPACE toggle · Enter/Esc close";
-    return [truncateToWidth(heading, width), "", ...body, "", footer];
+    return [truncateToWidth(heading, width), "", ...body, "", truncateToWidth(footer + "   📦 = npm-managed (config-filtered)", width)];
   }
 
   invalidate(): void {

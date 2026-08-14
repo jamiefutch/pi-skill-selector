@@ -15,7 +15,7 @@
  */
 import type { ExtensionUIContext } from "@earendil-works/pi-coding-agent";
 import { matchesKey, Key, truncateToWidth } from "@earendil-works/pi-tui";
-import { getAllSkills, moveSkill, scopeLabel, type SkillInfo } from "./skills.ts";
+import { getAllSkills, moveSkill, scopeLabel, type SkillInfo } from "./skills.js";
 
 export interface SkillSelectorResult {
   /** One summary line per toggle performed. */

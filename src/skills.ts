@@ -15,7 +15,7 @@
 import { homedir } from "node:os";
 import { join, basename } from "node:path";
 import { readdirSync, existsSync, mkdirSync, renameSync, readFileSync } from "node:fs";
-import { getAllNpmSkills, toggleNpmSkill, npmPackagesRoot, type NpmSkill } from "./npm-skills.ts";
+import { getAllNpmSkills, toggleNpmSkill, npmPackagesRoot, type NpmSkill } from "./npm-skills.js";
 
 /** Compute the agent root. Honours the PI_AGENT_ROOT env var (proxying for
    tests/CI) and otherwise derives it from the user's home. */

@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -16,14 +16,13 @@
     "skills"
   ],
   "files": [
-    "extensions",
-    "src",
+    "dist",
     "README.md",
     "LICENSE"
   ],
   "pi": {
     "extensions": [
-      "./extensions"
+      "./dist/extensions"
     ]
   },
   "peerDependencies": {

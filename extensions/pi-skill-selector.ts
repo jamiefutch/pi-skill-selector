@@ -15,8 +15,8 @@
  * pi package filtering in settings.json.
  */
 import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
-import { migrateLegacyDisabled } from "../src/skills.ts";
-import { runSkillSelector } from "../src/selector.ts";
+import { migrateLegacyDisabled } from "../src/skills.js";
+import { runSkillSelector } from "../src/selector.js";
 
 export default function piSkillSelector(pi: ExtensionAPI): void {
   // One-time migration of legacy ~/.pi/agent/skills/_disabled → .skills-inactive

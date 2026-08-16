@@ -1,11 +1,12 @@
 {
   "name": "@jamiefutch/pi-skill-selector",
-  "version": "0.5.2",
-  "description": "Pi package: enable/disable skills by moving them between active/inactive directories",
+  "version": "0.5.3",
+  "description": "Pi package: enable/disable skills",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -13,7 +14,10 @@
   "keywords": [
     "pi",
     "pi-package",
-    "skills"
+    "pi-extension",
+    "pi-skill-selector",
+    "Skills",
+    "Manage Skills"
   ],
   "files": [
     "dist",
@@ -34,6 +38,14 @@
     "@earendil-works/pi-tui": "*",
     "@types/node": "^22.20.1",
     "typescript": "^5.4.0",
-    "vitest": "^1.0.0"
-  }
+    "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "@google/genai@1.52.0": true,
+    "esbuild@0.21.5": true,
+    "fsevents@2.3.3": true,
+    "protobufjs@7.6.5": true
+  },
+  "publishConfig": {
+    "access": "public"
 }

@@ -3,7 +3,16 @@
   "version": "0.5.3",
   "description": "Pi package: enable/disable skills",
   "license": "MIT",
+  "author": "jamiefutch",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamiefutch/pi-skill-selector.git"
+  },
+  "homepage": "https://github.com/jamiefutch/pi-skill-selector#readme",
+  "bugs": {
+    "url": "https://github.com/jamiefutch/pi-skill-selector/issues"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
@@ -13,11 +22,12 @@
   },
   "keywords": [
     "pi-package",
-    "pi",   
+    "pi",
     "pi-extension",
+    "pi-coding-agent",
     "pi-skill-selector",
-    "Skills",
-    "Manage Skills"
+    "skills",
+    "skill-selector"
   ],
   "files": [
     "dist",

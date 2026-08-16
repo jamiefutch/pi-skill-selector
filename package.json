@@ -12,8 +12,8 @@
     "test:watch": "vitest"
   },
   "keywords": [
-    "pi",
     "pi-package",
+    "pi",   
     "pi-extension",
     "pi-skill-selector",
     "Skills",

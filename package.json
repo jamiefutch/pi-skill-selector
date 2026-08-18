@@ -1,6 +1,6 @@
 {
   "name": "@jamiefutch/pi-skill-selector",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Pi package: enable/disable skills",
   "license": "MIT",
   "author": "jamiefutch",

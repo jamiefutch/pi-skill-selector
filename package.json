@@ -50,12 +50,6 @@
     "typescript": "^5.4.0",
     "vitest": "^4.1.10"
   },
-  "allowScripts": {
-    "@google/genai@1.52.0": true,
-    "esbuild@0.21.5": true,
-    "fsevents@2.3.3": true,
-    "protobufjs@7.6.5": true
-  },
   "publishConfig": {
     "access": "public"
   }

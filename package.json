@@ -15,7 +15,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -30,13 +29,14 @@
     "skill-selector"
   ],
   "files": [
-    "dist",
+    "extensions",
+    "src",
     "README.md",
     "LICENSE"
   ],
   "pi": {
     "extensions": [
-      "./dist/extensions/pi-skill-selector.js"
+      "./extensions"
     ]
   },
   "peerDependencies": {

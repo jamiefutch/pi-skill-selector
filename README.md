@@ -24,11 +24,18 @@ As a pi package:
 # From a local path
 pi install /path/to/pi-skill-selector
 
+# From git (no build step needed)
+pi install git:github.com/jamiefutch/pi-skill-selector
+
 # Once published
 pi install npm:@jamiefutch/pi-skill-selector
 ```
 
 Then run `/reload`.
+
+> The package ships its **TypeScript source** — the `pi` manifest points at
+> `extensions/`, which pi compiles on load (no `dist` build required, so git
+> installs work out of the box).
 
 > **Requirements:** the `/skills` picker is interactive and needs pi's **TUI mode**.
 
